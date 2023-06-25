@@ -1,14 +1,19 @@
 import Link from 'next/link';
+import { CiLogout } from 'react-icons/ci';
 
 const links = [
     {
-        label: 'Inicio',
-        route: '/'
+        label: 'Buscador',
+        route: '/model'
+    },
+    {
+        label: 'Historial',
+        route: '/model/history'
     },
     {
         label: 'Sobre nosotros',
-        route: '/about'
-    }
+        route: '/model/about'
+    },
 ]
 
 export default function Navigation() {
@@ -27,6 +32,10 @@ export default function Navigation() {
                             </Link>
                         ))
                     }
+                    <button type="button" className="transition bg-c-gris-c duration-200 p-2 text-c-negro font-semibold leading-6 rounded-lg text-xl shadow-sm hover:shadow-md">
+                        <CiLogout className="w-5 h-5 inline-block align-text-top p-0 mr-2" />
+                        Cerrar Sesion
+                    </button>
                 </div>
             </nav>
         </header>
