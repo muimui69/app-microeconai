@@ -13,7 +13,6 @@ export default function ModelApp() {
 
     const handleChange = ({ target: { name, value } }) => {
         setUserPrompt({ ...userPrompt, [name]: value });
-        console.log({ [name]: value });
         setSearch(value !== '');
     };
 
