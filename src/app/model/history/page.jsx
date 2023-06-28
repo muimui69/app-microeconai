@@ -1,7 +1,8 @@
 export default function History() {
     return (
         <>
-            <div className="flex bg-gray-700 justify-center items-center min-h-screen p-10">
+            <h1>History</h1>
+            {/* <div className="flex bg-gray-700 justify-center items-center min-h-screen p-10">
                 <div className="md:w-3/5 w-3/4 px-10 flex flex-col gap-2 p-5 bg-gray-800 text-white">
                     <h1 className="py-5 text-lg">Reviews</h1>
                     <div className="flex bg-gray-600 bg-opacity-20 border border-gray-200 rounded-md">
@@ -76,7 +77,7 @@ export default function History() {
                 </div>
             </div>
             <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
-            
+             */}
         </>
     )
 }
