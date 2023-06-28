@@ -45,7 +45,7 @@ export default function Navigation() {
             <nav className="flex items-start lg:items-stretch flex-row space-x-2 lg:space-x-0 lg:flex-col lg:space-y-2">
                 {
                     links.map(({ label, route, icon }) => (
-                        <Link
+                        <Link 
                             key={label}
                             href={route}
                             onClick={() => setSelect(pathname)}
