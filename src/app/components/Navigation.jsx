@@ -41,8 +41,8 @@ export default function Navigation() {
     }, [pathname]);
 
     return (
-        <div class="bg-c-negro px-2 lg:px-4 py-2 lg:min-h-screen min-h-0 lg:py-10 sm:rounded-xl flex lg:flex-col justify-between">
-            <nav class="flex items-start lg:items-stretch flex-row space-x-2 lg:space-x-0 lg:flex-col lg:space-y-2">
+        <div className="bg-c-negro px-2 lg:px-4 py-2 lg:min-h-screen min-h-0 lg:py-10 sm:rounded-xl flex lg:flex-col justify-between">
+            <nav className="flex items-start lg:items-stretch flex-row space-x-2 lg:space-x-0 lg:flex-col lg:space-y-2">
                 {
                     links.map(({ label, route, icon }) => (
                         <Link
