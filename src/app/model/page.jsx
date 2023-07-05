@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react';
-
 import {IoFilterCircleOutline} from 'react-icons/io5';
 
 export default function ModelApp() {

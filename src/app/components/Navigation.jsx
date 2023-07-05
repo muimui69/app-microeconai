@@ -1,7 +1,8 @@
 'use client'
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'
+import { usePathname,useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react';
+import { useContextProvider } from '../context/ContextProvider';
 
 import {
     AiOutlineHome,
@@ -33,8 +34,19 @@ const links = [
 
 export default function Navigation() {
 
+    const { logout } = useContextProvider();
     const pathname = usePathname();
+    const navigate = useRouter();
     const [select, setSelect] = useState(pathname);
+
+    const handleLogout = async ()=>{
+        try {
+            await logout();
+            navigate.push('/')
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
     useEffect(() => {
         setSelect(pathname)
@@ -45,7 +57,7 @@ export default function Navigation() {
             <nav className="flex items-start lg:items-stretch flex-row space-x-2 lg:space-x-0 lg:flex-col lg:space-y-2">
                 {
                     links.map(({ label, route, icon }) => (
-                        <Link 
+                        <Link
                             key={label}
                             href={route}
                             onClick={() => setSelect(pathname)}
@@ -56,7 +68,7 @@ export default function Navigation() {
                 }
             </nav>
             <div className="flex items-center flex-row space-x-2 lg:space-x-0 lg:flex-col lg:space-y-2">
-                <button type="submit">
+                <button type="submit" onClick={handleLogout}>
                     <LuLogOut className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </button>
             </div>

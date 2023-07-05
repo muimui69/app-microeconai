@@ -1,7 +1,7 @@
 import Navigation from "../components/Navigation";
 
-export default function ModelLayout({ children }) {
 
+export default function ModelLayout({ children }) {
     return (
         <>
             <div className="bg-gray-800 flex flex-col sm:flex-wrap items-stretch justify-start">
@@ -10,6 +10,7 @@ export default function ModelLayout({ children }) {
                     {children}
                 </div>
             </div>
+
         </>
     )
 }
