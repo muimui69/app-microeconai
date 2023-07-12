@@ -7,25 +7,25 @@ const configuration = new Configuration({
 })
 
 if(!configuration.apiKey){
-    throw new Error('OPENAI_API_KEY no esta definido');54
+    throw new Error('OPENAI_API_KEY no esta definido');
 }
 
 const openai = new OpenAIApi(configuration)
 
-export async function GET(request){
-    try {
-        const response = await openai.createCompletion({
-            prompt:'Dame un chiste de programador',
-            model:'text-davinci-003',
-            temperature:0.5,
-            max_tokens:50
-        })
-        return NextResponse.json(response.data.choices[0].text);
-    } catch (error) {
-        return NextResponse.error(error,{
-            status:500,
-        })
-    }
-} 
+// export async function GET(request){
+//     try {
+//         const response = await openai.createCompletion({
+//             prompt:'Dame un chiste de programador',
+//             model:'text-davinci-003',
+//             temperature:0.5,
+//             max_tokens:50
+//         })
+//         return NextResponse.json(response.data.choices[0].text);
+//     } catch (error) {
+//         return NextResponse.error(error,{
+//             status:500,
+//         })
+//     }
+// } 
 
 
