@@ -2,6 +2,7 @@
 import { firebaseConfig } from './firebase/FireabaseConfig';
 import { FirebaseAppProvider } from 'reactfire';
 import { ContextProvider } from "./context/ContextProvider";
+import Navigation from './components/Navigation';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
               <title>MicroEconAI</title>
             </head>
             <body className={inter.className}>
+              <Navigation />
               {children}
             </body>
           </html>
