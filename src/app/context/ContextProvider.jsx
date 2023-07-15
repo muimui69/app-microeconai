@@ -30,18 +30,17 @@ export const useContextProvider = () => {
 
 export const ContextProvider = ({ children }) => {
 
+    const navigate = useRouter();
     const [user, setUser] = useState(null);
     const signup = async (email, password) => createUserWithEmailAndPassword(auth, email, password);
-
     const login = async (email, password) => signInWithEmailAndPassword(auth, email, password);
 
-    const navigate = useRouter();
+
     const loginWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
         try {
-            const credentials = await signInWithPopup(auth, provider);
+            await signInWithPopup(auth, provider);
             navigate.push('/model');
-            console.log(credentials);
         } catch (e) {
             console.error(e);
         }
@@ -51,7 +50,6 @@ export const ContextProvider = ({ children }) => {
 
     useEffect(() => {
         onAuthStateChanged(auth, currentUser => {
-            console.log(currentUser);
             setUser(currentUser);
         });
     }, [auth]);
@@ -64,7 +62,8 @@ export const ContextProvider = ({ children }) => {
                 login,
                 user,
                 logout,
-                loginWithGoogle
+                loginWithGoogle,
+                user
             }}
         >
             {children}

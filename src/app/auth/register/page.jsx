@@ -2,18 +2,19 @@
 import Image from 'next/image';
 import logo from '@/app/assets/logo.webp';
 import { FcGoogle } from 'react-icons/fc';
-import { CiLock } from 'react-icons/ci';
-import { FiAlertCircle } from 'react-icons/fi';
 import { useState } from 'react';
 import { useContextProvider } from '../../context/ContextProvider';
+import UseValidateRegister from '../../hooks/UseValidateRegister';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { FiAlertCircle } from 'react-icons/fi';
 
 export default function RegisterPage() {
 
     const navigate = useRouter();
 
-    const { login, loginWithGoogle } = useContextProvider();
+    const { signup } = useContextProvider();
+    const { formErrors, validateField, showErrorEmail, showErrorPassword } = UseValidateRegister();
 
     const [user, setUser] = useState({
         email: '',
@@ -22,21 +23,17 @@ export default function RegisterPage() {
 
     const handleChange = ({ target: { name, value } }) => {
         setUser({ ...user, [name]: value });
-        console.log({ [name]: value })
+        validateField(name, value);
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const buttonSelectId = e.nativeEvent.submitter.id;
-        if (buttonSelectId === 'register') {
-            navigate.push('/register');
-        } else {
-            try {
-                await login(user.email, user.password);
-                navigate.push('/model');
-            } catch (err) {
-                console.log(err)
-            }
+        try {
+            await signup(user.email, user.password);
+            navigate.push('/');
+        } catch (err) {
+            console.error(err)
         }
     };
 
@@ -57,6 +54,16 @@ export default function RegisterPage() {
                         className="border rounded-lg px-3 py-2 mt-1 mb-5 text-black text-sm w-full"
                     />
 
+                    {
+                        showErrorEmail &&
+                        <div className="flex items-center mb-5 text-sm text-yellow-300" >
+                            <FiAlertCircle className="flex-shrink-0 inline w-4 h-4 mr-3" />
+                            <div>
+                                {formErrors["email"]}
+                            </div>
+                        </div>
+                    }
+
                     <label className="font-semibold text-sm text-c-blanco pb-1 block">Contraseña</label>
                     <input
                         type="password"
@@ -65,13 +72,16 @@ export default function RegisterPage() {
                         onChange={handleChange}
                         className="border rounded-lg px-3 py-2 mt-1 mb-5 text-black text-sm w-full"
                     />
-                    
-                        {/* <div class="flex items-center mb-5 text-sm text-yellow-300" >
-                            <FiAlertCircle class="flex-shrink-0 inline w-4 h-4 mr-3" />
+
+                    {
+                        showErrorPassword &&
+                        <div className="flex items-center mb-5 text-sm text-yellow-300" >
+                            <FiAlertCircle className="flex-shrink-0 inline w-4 h-4 mr-3" />
                             <div>
-                                <span class="font-medium">Error</span> La constraseña debe tener almenos 6 caracteres.
+                                {formErrors["password"]}
                             </div>
-                        </div> */}
+                        </div>
+                    }
 
                     <button type="submit" className="transition duration-200 bg-c-guindo hover:bg-c-guindo-h focus:bg-c-guindo-h1 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
                         Registrarse

@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Logo from '../assets/logo.webp'
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useContextProvider } from '../context/ContextProvider';
+import { useRouter } from 'next/navigation';
 
 const links = [
     {
@@ -19,12 +21,30 @@ const links = [
     },
 ];
 
+const linksUser = [
+    {
+        label: 'Buscador',
+        to: '/model'
+    },
+    {
+        label: 'Historial',
+        to: '/model/history'
+    }
+];
+
 export default function Navigation() {
 
     const pathname = usePathname();
+    const navigation = useRouter();
+    const { user, logout } = useContextProvider();
 
     if (pathname === '/auth/login' || pathname === '/auth/register') {
-        return null; // No se renderiza la barra de navegación en la ruta "/auth/login" y en "/auth/register"
+        return null;
+    }
+
+    const handleLogout = async()=>{
+        await logout();
+        navigation.push('/');
     }
 
     return (
@@ -36,7 +56,13 @@ export default function Navigation() {
                         <span className="self-center text-xl font-semibold whitespace-nowrap">MicroeEconAi</span>
                     </div>
                     <div className="flex items-center lg:order-2">
-                        <Link href="/auth/login" className="text-white hover:bg-c-gris-c focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none hover:text-black">Iniciar Sesion</Link>
+                        {
+                            !user ?
+                                <Link href="/auth/login" className="text-white hover:bg-c-gris-c focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none hover:text-black">Iniciar Sesion</Link>
+                                :
+                                <button onClick={() => handleLogout()} className="text-white hover:bg-c-gris-c focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none hover:text-black">Cerrar Sesion</button>
+                        }
+
                         <button data-collapse-toggle="mobile-menu-2" type="button" className="inline-flex items-center p-2 ml-1 text-sm  rounded-lg lg:hidden focus:outline-none  text-gray-400 hover:bg-gray-700 focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
                             <span className="sr-only">Open main menu</span>
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
@@ -46,13 +72,22 @@ export default function Navigation() {
                     <div className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                         <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                             {
-                                links.map(({ label, anchor }, index) => (
-                                    <li key={index}>
-                                        <Link href={anchor} scroll={false} className="block py-2 pr-4 pl-3 border-b hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 text-gray-400  hover:text-white  border-gray-700">
-                                            {label}
-                                        </Link>
-                                    </li>
-                                ))
+                                !user ?
+                                    links.map(({ label, anchor }, index) => (
+                                        <li key={index}>
+                                            <Link href={anchor} scroll={false} className="block py-2 pr-4 pl-3 border-b hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 text-gray-400  hover:text-white  border-gray-700">
+                                                {label}
+                                            </Link>
+                                        </li>
+                                    ))
+                                    :
+                                    linksUser.map(({ label, to }, index) => (
+                                        <li key={index}>
+                                            <Link href={to} scroll={false} className="block py-2 pr-4 pl-3 border-b hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 text-gray-400  hover:text-white  border-gray-700">
+                                                {label}
+                                            </Link>
+                                        </li>
+                                    ))
                             }
                         </ul>
                     </div>

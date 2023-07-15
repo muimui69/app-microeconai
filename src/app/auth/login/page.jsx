@@ -3,6 +3,7 @@ import Image from 'next/image';
 import logo from '@/app/assets/logo.webp';
 import { FcGoogle } from 'react-icons/fc';
 import { CiLock } from 'react-icons/ci';
+import { FiAlertCircle } from 'react-icons/fi';
 import { useState } from 'react';
 import { useContextProvider } from '../../context/ContextProvider';
 import { useRouter } from 'next/navigation';
@@ -12,20 +13,22 @@ export default function LoginPage() {
 
   const navigate = useRouter();
 
-  const { login ,loginWithGoogle} = useContextProvider();
+  const { login, loginWithGoogle } = useContextProvider();
 
   const [user, setUser] = useState({
     email: '',
     password: ''
   });
 
+  const [error, setError] = useState('');
+
   const handleChange = ({ target: { name, value } }) => {
     setUser({ ...user, [name]: value });
-    console.log({ [name]: value })
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     const buttonSelectId = e.nativeEvent.submitter.id;
     if (buttonSelectId === 'register') {
       navigate.push('/auth/register');
@@ -34,7 +37,8 @@ export default function LoginPage() {
         await login(user.email, user.password);
         navigate.push('/model');
       } catch (err) {
-        console.log(err)
+        console.error(err)
+        setError(err);
       }
     }
   };
@@ -60,14 +64,26 @@ export default function LoginPage() {
             name="password"
             value={user.password}
             onChange={handleChange}
-            className="border rounded-lg px-3 py-2 mt-1 mb-5 text-black text-sm w-full" />
+            className="border rounded-lg px-3 py-2 mt-1 mb-5 text-black text-sm w-full"
+          />
+
+          {
+            error &&
+            <div className="flex items-center mb-5 text-sm text-yellow-300" >
+              <FiAlertCircle className="flex-shrink-0 inline w-4 h-4 mr-3" />
+              <div>
+                Correo o constraseña incorrectos.
+              </div>
+            </div>
+          }
+
           <button type="submit" className="transition duration-200 bg-c-guindo hover:bg-c-guindo-h focus:bg-c-guindo-h1 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
             Iniciar sesion
           </button>
         </div>
         <div className="p-4">
           <p className='flex py-2 text-c-blanco items-center justify-center'>O inicia sesion con:</p>
-          <button type="button" onClick={()=>loginWithGoogle()} className="transition bg-c-gris-c duration-200  text-c-negro w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block">
+          <button type="button" onClick={() => loginWithGoogle()} className="transition bg-c-gris-c duration-200  text-c-negro w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block">
             <FcGoogle className="w-5 h-5 inline-block align-text-top p-0" />
             Google
           </button>
